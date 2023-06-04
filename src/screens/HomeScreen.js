@@ -5,48 +5,35 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 const HomeScreen = () => {
-  const [data, setData] = useState([
-    {
-      title: 'Wake up',
-    },
-    {
-      title: 'Breakfast',
-    },
-    // {
-    //   title: 'Wake up',
-    // },
-    // {
-    //   title: 'Breakfast',
-    // },
-    // {
-    //   title: 'Wake up',
-    // },
-    // {
-    //   title: 'Breakfast',
-    // },
-    // {
-    //   title: 'Wake up',
-    // },
-    // {
-    //   title: 'Breakfast',
-    // },
-    // {
-    //   title: 'Wake up',
-    // },
-    // {
-    //   title: 'Breakfast',
-    // },
-    // {
-    //   title: 'Wake up',
-    // },
-    // {
-    //   title: 'Breakfast',
-    // },
-  ]);
+  // const [data, setData] = useState([
+  //   {
+  //     title: 'Wake up',
+  //   },
+  // ]);
+  const [data, setData] = useState([]);
+  const [activity, setActivity] = useState('');
+
+  const addData = () => {
+    setData([...data, {title: activity}]);
+    setActivity('');
+  };
+
+  const deleteData = index => {
+    // alert(index);
+    let filterData = data.filter((value, key) => {
+      //key==index
+      //0==0
+      // 1==0
+      //2==0
+      return key != index;
+    });
+    setData(filterData);
+  };
 
   return (
     <View style={styles.container}>
@@ -66,7 +53,9 @@ const HomeScreen = () => {
                 <Text style={styles.text}>{value.title}</Text>
               </View>
               {/* Delete button */}
-              <TouchableOpacity style={styles.buttonDelete}>
+              <TouchableOpacity
+                style={styles.buttonDelete}
+                onPress={() => deleteData(key)}>
                 <Icon name="trash-2" color={'white'} size={25} />
               </TouchableOpacity>
             </View>
@@ -74,9 +63,18 @@ const HomeScreen = () => {
         })}
       </ScrollView>
       {/* Add button */}
-      <TouchableOpacity style={styles.addButton}>
-        <Icon name="plus" size={25} color={'white'} />
-      </TouchableOpacity>
+      <View style={styles.containerInput}>
+        <TextInput
+          placeholder="Masukan kegiatan"
+          placeholderTextColor={'grey'}
+          style={styles.input}
+          value={activity}
+          onChangeText={text => setActivity(text)}
+        />
+        <TouchableOpacity style={styles.addButton} onPress={addData}>
+          <Icon name="plus" size={25} color={'white'} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -125,6 +123,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  containerInput: {
+    flexDirection: 'row',
+    // backgroundColor: 'red',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    backgroundColor: 'white',
+  },
   addButton: {
     height: 40,
     width: 40,
@@ -132,10 +138,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 40,
-    position: 'absolute',
-    zIndex: 999,
-    right: 20,
-    bottom: 20,
+  },
+  input: {
+    // backgroundColor: 'blue',
+    flex: 1,
+    color: 'black',
   },
 });
 export default HomeScreen;
